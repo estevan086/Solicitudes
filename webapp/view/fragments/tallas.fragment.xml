@@ -1,0 +1,24 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout">
+	<Dialog title="Mis Tallas">
+		<content>
+			<Label text="Codigo" labelFor="frmCode"/>
+			<Input id="frmCode" required="true" type="Number" class="sapUiTinyMargin" width="98%"/>
+			<Label text="E-Mail" labelFor="frmMail"/>
+			<Input id="frmMail" type="Email" class="sapUiTinyMargin" width="98%"/>
+			<Label text="Nombres" labelFor="frmFName"/>
+			<Input id="frmFName" class="sapUiTinyMargin" width="98%"/>
+			<Label text="Apellidos" labelFor="frmLName"/>
+			<Input id="frmLName" class="sapUiTinyMargin" width="98%"/>
+			<Label text="Edad" labelFor="frmAge"/>
+			<Input id="frmAge" type="Number" class="sapUiTinyMargin" width="98%"/>
+			<Label text="Dirección" labelFor="frmAddress"/>
+			<Input id="frmAddress" class="sapUiTinyMargin" width="98%"/>
+		</content>
+		<beginButton>
+			<Button text="Crear" type="Accept" press="onCreatePress"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancelar" type="Reject" press="onCancelPress"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

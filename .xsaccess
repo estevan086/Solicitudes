@@ -1,0 +1,38 @@
+{
+    "exposed": true,
+    "authentication": [{
+        "method": "Basic"
+    }],
+
+    "mime_mapping": [{
+        "extension": "jpg",
+        "mimetype": "image/jpeg"
+    }],
+    "force_ssl": false,
+    "enable_etags": true,
+    "prevent_xsrf": false,
+    "anonymous_connection": null,
+    "cors": [{
+        "enabled": false
+    }],
+    "cache_control": "no-cache, no-store",
+    "default_file": "webapp/index.html",
+    "rewrite_rules": [
+        {
+         "source": "/SolHeader/\\$metadata",
+         "target": "SolHeader.xsodata/$metadata"
+        },
+        {
+         "source": "/SolHeader/SolHeader/\\$count",
+         "target": "SolHeader.xsodata/SolHeader/$count"
+        },
+        {
+         "source": "/SolHeader/SolHeader\\((.+)\\)",
+         "target": "SolHeader.xsjs?Codigo=$1"
+        },
+        {
+         "source": "/SolHeader/SolHeader\\/??",
+         "target": "SolHeader.xsjs"
+        }
+    ]
+}

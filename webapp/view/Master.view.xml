@@ -1,0 +1,95 @@
+<mvc:View
+	controllerName="com.Solicitudes.controller.Master"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:semantic="sap.m.semantic">
+
+	<semantic:MasterPage
+		id="page"
+		title="{masterView>/title}"
+		navButtonPress="onNavBack"
+		showNavButton="true">
+		<semantic:subHeader>
+			<Bar id="headerBar">
+				<contentMiddle>
+					<SearchField
+						id="searchField"
+						showRefreshButton="{= !${device>/support/touch} }"
+						tooltip="{i18n>masterSearchTooltip}"
+						width="100%"
+						search="onSearch">
+					</SearchField>
+				</contentMiddle>
+			</Bar>
+		</semantic:subHeader>
+
+		<semantic:content>
+			<PullToRefresh
+				id="pullToRefresh"
+				visible="{device>/support/touch}"
+				refresh="onRefresh" />
+			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+			<List
+				id="list"
+				items="{
+					path: '/SolHeader',
+					sorter: {
+						path: 'SolicitudId',
+						descending: false
+					},
+					groupHeaderFactory: '.createGroupHeader'
+				}"
+				busyIndicatorDelay="{masterView>/delay}"
+				noDataText="{masterView>/noDataText}"
+				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished="onUpdateFinished"
+				selectionChange="onSelectionChange">
+				<infoToolbar>
+					<Toolbar
+						active="true"
+						id="filterBar"
+						visible="{masterView>/isFilterBarVisible}"
+						press="onOpenViewSettings">
+						<Title
+							id="filterBarLabel"
+							text="{masterView>/filterBarLabel}" />
+					</Toolbar>
+				</infoToolbar>
+				<items>
+					<ObjectListItem
+						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
+						press="onSelectionChange"
+						title="{SolicitudId}"
+						numberUnit="{Estado}">
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+
+        <semantic:customFooterContent>
+        <FlexBox
+				width="95%"
+				class="columns"
+				justifyContent="SpaceBetween"
+					alignItems="Center">
+				<items>
+				    <Button icon="sap-icon://measure" text="Tallas" width="100%" press="onTallasPress">
+				        <layoutData>
+                        <FlexItemData growFactor="1" />
+                      </layoutData>
+                    </Button>
+    		        <Button icon="sap-icon://create-form" text="Crear" width="100%" press="onTallasPress" type="Emphasized">
+    		        <layoutData>
+                        <FlexItemData growFactor="1" />
+                      </layoutData>
+                     </Button> 
+				</items>
+			</FlexBox>
+    		
+    	</semantic:customFooterContent>
+	</semantic:MasterPage>
+
+</mvc:View>

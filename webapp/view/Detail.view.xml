@@ -1,0 +1,62 @@
+<mvc:View
+	controllerName="com.Solicitudes.controller.Detail"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic">
+
+	<semantic:DetailPage
+		id="page"
+		navButtonPress="onNavBack"
+		showNavButton="{device>/system/phone}"
+		title="{i18n>detailTitle}"
+		busy="{detailView>/busy}"
+		busyIndicatorDelay="{detailView>/delay}">
+
+		<semantic:content>
+			<ObjectHeader
+				id="objectHeader"
+				title="{SolicitudId}"
+				numberUnit="{Estado}">
+				<attributes>
+    			<ObjectAttribute
+    				title="Nombre"
+    				text="{NombrePersona}"/>
+    			<ObjectAttribute
+    				title="Número Persona"
+    				text="{NumeroPersona}"/>
+        		</attributes>
+        		<statuses>
+        			<ObjectStatus
+        				title="Estado"
+        				text="{Estado}"
+        				state="Warning"/>
+        		</statuses>
+			</ObjectHeader>
+			<IconTabBar
+				id="iconTabBar"
+				class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter
+						id="iconTabBarFilter1"
+						icon="sap-icon://hint"
+						tooltip="{i18n>detailIconTabBarInfo}">
+					</IconTabFilter>
+					<IconTabFilter
+						id="iconTabBarFilter2"
+						icon="sap-icon://attachment"
+						tooltip="{i18n>detailIconTabBarAttachments}">
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+
+		</semantic:content>
+        <semantic:positiveAction>
+			<semantic:PositiveAction text="Aprobar" press="onAprobarButtonPress"/>
+		</semantic:positiveAction>
+		<semantic:negativeAction>
+			<semantic:NegativeAction text="Rechazar" press="onRechazarButtonPress"/>
+		</semantic:negativeAction>
+
+	</semantic:DetailPage>
+
+</mvc:View>

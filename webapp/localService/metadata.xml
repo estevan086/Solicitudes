@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<edmx:Edmx Version="1.0"
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:DataServices
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+        <Schema Namespace="Solicitudes.xs.SolHeader"
+            xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+            xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="SolHeaderType">
+                <Key>
+                    <PropertyRef Name="SolItem.SolicitudId" />
+                </Key>
+                <Property Name="SolItem.SolicitudId" Type="Edm.String" Nullable="false" MaxLength="10" />
+                <Property Name="NumeroPersona" Type="Edm.String" MaxLength="10" />
+                <Property Name="NombrePersona" Type="Edm.String" MaxLength="20" />
+                <Property Name="TipoSol" Type="Edm.String" MaxLength="3" />
+                <Property Name="Estado" Type="Edm.String" MaxLength="3" />
+                <Property Name="FechaActual" Type="Edm.DateTime" />
+                <Property Name="FechaProbableParto" Type="Edm.DateTime" />
+                <Property Name="Adjunto" Type="Edm.Binary" />
+            </EntityType>
+            <EntityContainer Name="SolHeader" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="SolHeader" EntityType="Solicitudes.xs.SolHeader.SolHeaderType" />
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

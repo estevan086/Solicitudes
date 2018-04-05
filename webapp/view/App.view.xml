@@ -1,0 +1,27 @@
+<mvc:View
+	controllerName="com.Solicitudes.controller.App"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	busy="{appView>/busy}"
+	busyIndicatorDelay="{appView>/delay}"
+	xmlns="sap.m"
+	xmlns:u="sap.ui.unified"
+	height="100%"
+	class="viewPadding">
+	<u:Shell
+			id="myShell"
+			icon="https://www.fincomercio.com/sites/default/files/logo_colsubsidi_azulo_png_0.png">
+		<u:headEndItems>
+			
+			</u:headEndItems>
+			<u:user>
+				<u:ShellHeadUserItem
+				    id = "shelluser"
+					image="sap-icon://person-placeholder"
+					username="{ path:'gblData>/User'}"
+					press="handleUserItemPressed" />
+			</u:user>
+		
+		<SplitApp id="idAppControl" />
+	</u:Shell>
+</mvc:View>
