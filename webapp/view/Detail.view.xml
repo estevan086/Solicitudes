@@ -2,8 +2,8 @@
 	controllerName="com.Solicitudes.controller.Detail"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:semantic="sap.m.semantic">
-
+	xmlns:semantic="sap.m.semantic"
+	xmlns:t="sap.ui.table">
 	<semantic:DetailPage
 		id="page"
 		navButtonPress="onNavBack"
@@ -11,52 +11,221 @@
 		title="{i18n>detailTitle}"
 		busy="{detailView>/busy}"
 		busyIndicatorDelay="{detailView>/delay}">
-
 		<semantic:content>
 			<ObjectHeader
 				id="objectHeader"
+				responsive="true"
 				title="{SolicitudId}"
 				numberUnit="{Estado}">
 				<attributes>
-    			<ObjectAttribute
+					<ObjectAttribute
     				title="Nombre"
     				text="{NombrePersona}"/>
-    			<ObjectAttribute
+					<ObjectAttribute
     				title="Número Persona"
     				text="{NumeroPersona}"/>
-        		</attributes>
-        		<statuses>
-        			<ObjectStatus
+					<ObjectAttribute
+    				title="Tipo de Solicitud"
+    				text="{TipoSol}"/>
+					<ObjectAttribute
+    				title="Fecha"
+    				text="{FechaActual}"/>
+				</attributes>
+				<statuses>
+					<ObjectStatus
         				title="Estado"
         				text="{Estado}"
         				state="Warning"/>
-        		</statuses>
+				</statuses>
 			</ObjectHeader>
 			<IconTabBar
 				id="iconTabBar"
-				class="sapUiResponsiveContentPadding">
+				class="sapUiResponsiveContentPadding"
+				expanded="true" 
+                expandable="false">
 				<items>
 					<IconTabFilter
 						id="iconTabBarFilter1"
 						icon="sap-icon://hint"
 						tooltip="{i18n>detailIconTabBarInfo}">
+						<Text text="Comentarios" />
+						<TextArea value="Solicitud Prueba " growing="true" growingMaxLines="7" width="100%"/>
+						<t:Table
+				id="TableMisTallas"
+				rows="{items>/DetalleSol}"
+				selectionMode="MultiToggle"
+				visibleRowCount="7"
+				ariaLabelledBy="title">
+							<t:toolbar>
+								<Toolbar>
+									<Title id="title" text="Materiales"></Title>
+									<ToolbarSpacer/>
+								</Toolbar>
+							</t:toolbar>
+							<t:columns>
+								<t:Column>
+									<Label text="Area Dotación" />
+									<t:template>
+										<Text text="{items>area}" wrapping="true"/>
+									</t:template>
+								</t:Column>
+								<t:Column>
+									<Label text="Material" />
+									<t:template>
+										<Text text="{items>material}" wrapping="true"/>
+									</t:template>
+								</t:Column>
+								<t:Column>
+									<Label text="Talla" />
+									<t:template>
+										<Text text="{items>talla}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column hAlign="Start">
+									<Label text="Unidad de Medidad" />
+									<t:template>
+										<Text text="{items>unidad}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
 					</IconTabFilter>
 					<IconTabFilter
 						id="iconTabBarFilter2"
 						icon="sap-icon://attachment"
 						tooltip="{i18n>detailIconTabBarAttachments}">
+						<Text text="Adjuntos ..." />
+						<UploadCollection
+			id="UploadCollection"
+			maximumFilenameLength="55"
+			maximumFileSize="10"
+			multiple="false"
+			change="onChange"
+			fileSizeExceed="onFileSizeExceed"
+			selectionChange="onSelectionChange"
+			typeMissmatch="onTypeMissmatch"
+			uploadComplete="onUploadComplete"
+			beforeUploadStarts="onBeforeUploadStarts"
+			items="{
+				path: '',
+				templateShareable: false
+			}"
+			mode="MultiSelect">
+							<toolbar>
+								<OverflowToolbar id="myId">
+									<Title id="attachmentTitle" />
+									<ToolbarSpacer />
+									<Button
+						id="downloadButton"
+						text="Download"
+						press="onDownloadItem"
+						enabled="false"
+						type="Transparent" />
+									<Button
+						id="versionButton"
+						text="Upload a new version"
+						press="onVersion"
+						enabled="false"
+						type="Transparent" />
+									<UploadCollectionToolbarPlaceholder/>
+								</OverflowToolbar>
+							</toolbar>
+							<items>
+								<UploadCollectionItem
+					documentId="{documentId}"
+					fileName="{fileName}"
+					mimeType="{mimeType}"
+					thumbnailUrl="{thumbnailUrl}"
+					url="{url}"
+					enableEdit="false"
+					enableDelete="false"
+					visibleDelete="false"
+					visibleEdit="false"
+					attributes="{
+						path: 'attributes',
+						templateShareable: false
+					}"
+					statuses="{
+						path: 'statuses',
+						templateShareable: false
+					}"
+					selected="{selected}">
+									<attributes>
+										<ObjectAttribute
+							title="{title}"
+							text="{
+								parts: [ 'text', 'type' ],
+								formatter : '.formatAttribute'
+							}"
+							active="false" />
+									</attributes>
+									<statuses>
+										<ObjectStatus title="{title}"
+							text="{text}"
+							state="{state}" />
+									</statuses>
+								</UploadCollectionItem>
+							</items>
+						</UploadCollection>
+					</IconTabFilter>
+					<IconTabFilter
+						id="iconTabBarFilter3"
+						icon="sap-icon://history"
+						tooltip="{i18n>detailIconTabBarInfo}">
+						<t:Table
+				id="TableLog"
+				rows="{Log>/items}"
+				selectionMode="MultiToggle"
+				visibleRowCount="7"
+				ariaLabelledBy="title">
+							<t:toolbar>
+								<Toolbar>
+									<Title id="title2" text="Movimientos de Solicitud"></Title>
+									<ToolbarSpacer/>
+								</Toolbar>
+							</t:toolbar>
+							<t:columns>
+								<t:Column>
+									<Label text="Fecha" />
+									<t:template>
+										<Text text="{Log>fecha}" wrapping="true"/>
+									</t:template>
+								</t:Column>
+								<t:Column>
+									<Label text="Hora" />
+									<t:template>
+										<Text text="{Log>hora}" wrapping="true"/>
+									</t:template>
+								</t:Column>
+								<t:Column>
+									<Label text="Usuario" />
+									<t:template>
+										<Text text="{Log>usuario}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column hAlign="Start">
+									<Label text="Estado" />
+									<t:template>
+										<Text text="{Log>estado}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column hAlign="Start">
+									<Label text="Comentario" />
+									<t:template>
+										<Text text="{Log>comentario}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>
-
 		</semantic:content>
-        <semantic:positiveAction>
+		<semantic:positiveAction>
 			<semantic:PositiveAction text="Aprobar" press="onAprobarButtonPress"/>
 		</semantic:positiveAction>
 		<semantic:negativeAction>
 			<semantic:NegativeAction text="Rechazar" press="onRechazarButtonPress"/>
 		</semantic:negativeAction>
-
 	</semantic:DetailPage>
-
 </mvc:View>

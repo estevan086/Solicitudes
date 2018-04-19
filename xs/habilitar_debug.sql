@@ -1,0 +1,1 @@
+alter system alter configuration ('xsengine.ini','SYSTEM') set  ('httpserver','developer_mode')='true' with reconfigure

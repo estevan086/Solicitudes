@@ -1,0 +1,62 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:t="sap.ui.table"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified">
+	<Dialog title="Mis Tallas">
+		<content>
+			<l:VerticalLayout>
+			
+				<t:Table
+				id="TableMisTallas"
+				rows="{Tallas>/items}"
+				selectionMode="MultiToggle"
+				visibleRowCount="7"
+				ariaLabelledBy="title">
+					<t:toolbar>
+						<Toolbar>
+							<Title id="title" text="Materiales"></Title>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</t:toolbar>
+					<t:columns>
+						<t:Column>
+							<Label text="Area Dotación" />
+							<t:template>
+								<Text text="{Tallas>area}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+						<t:Column>
+							<Label text="Material" />
+							<t:template>
+								<Text text="{Tallas>material}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+						<t:Column hAlign="Start">
+							<Label text="Talla" />
+							<t:template>
+							    <Input value="{Tallas>talla}"/>
+							</t:template>
+						</t:Column>
+						<t:Column hAlign="Start">
+							<Label text="Unidad de Medida" />
+							<t:template>
+								<Text text="{Tallas>unidad}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+					</t:columns>
+				</t:Table>
+			</l:VerticalLayout>
+		</content>
+		<beginButton>
+			<Button text="Crear" type="Accept" press="onCreatePress"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancelar" type="Reject" press="onCancelPress"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

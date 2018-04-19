@@ -1,0 +1,122 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:t="sap.ui.table"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified">
+	<Dialog title="Creación Solicitud">
+		<content>
+			<l:VerticalLayout>
+				<Label text="Tipo de Solicitud" labelFor="frmCode"/>
+				<Select
+			    	id="SlTiposSol"
+			    	width="100%"
+					forceSelection="false"
+					change="fnHandleTipoSolicitud"
+					selectedKey=""
+					items="{
+						path: 'TiposSol>/items',
+						sorter: { path: 'TiposSol>key' }
+					}">
+					<core:Item key="{TiposSol>key}" text="{TiposSol>text}" />
+				</Select>
+				<Label text="Descripción" labelFor="frmDescripcion"/>
+				<TextArea id="frmDescripcion" maxLength="100" width="100%" showExceededText="false"/>
+				<Label id="LblFechaParto" visible="false" text="Fecha Probable de Parto" labelFor="DP1"/>
+				<DatePicker
+        			id="DPFechaParto"
+        			visible="false"
+        			placeholder="Ingresar Fecha ..."
+        			change="handleChange"
+        			class="sapUiSmallMarginBottom"/>
+				<Label id="Lblfile" visible="false"  text="Constancia de Embarazo" labelFor="DP2"/>
+			<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			visible="false"
+			uploadUrl="upload/"
+			tooltip="Upload your file to the local server"
+			uploadComplete="handleUploadComplete"
+			change="handleValueChange"
+			typeMissmatch="handleTypeMissmatch"
+			style="Emphasized"
+			width="100%"
+			fileType="txt,jpg,pdf"
+			placeholder="Selecciona un archivo a Subir...">
+					<u:parameters>
+						<u:FileUploaderParameter
+						name="param1"
+						value="Foo"/>
+						<u:FileUploaderParameter
+						name="param2"
+						value="bar"/>
+					</u:parameters>
+					<u:headerParameters>
+						<u:FileUploaderParameter
+						name="headerParam1"
+						value="Foo"/>
+						<u:FileUploaderParameter
+						name="headerParam2"
+						value="bar"/>
+					</u:headerParameters>
+				</u:FileUploader>
+				<CheckBox id="CbDscto" text="Aplica Descuento" selected="false" />
+				<t:Table
+				id="TableMisMateriales"
+				rows="{Materiales>/items}"
+				selectionMode="MultiToggle"
+				visibleRowCount="7"
+				ariaLabelledBy="title">
+					<t:toolbar>
+						<Toolbar>
+							<Title id="title" text="Materiales"></Title>
+							<ToolbarSpacer/>
+						</Toolbar>
+					</t:toolbar>
+					<t:columns>
+						<t:Column>
+							<Label text="Código Material" />
+							<t:template>
+								<Text text="{Materiales>material}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+						<t:Column>
+							<Label text="Descripción" />
+							<t:template>
+								<Text text="{Materiales>descripcion}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+						<t:Column>
+							<Label text="Talla" />
+							<t:template>
+								<Text text="{Materiales>talla}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+						<t:Column hAlign="Start">
+							<Label text="Unidad de Medidad" />
+							<t:template>
+								<Text text="{Materiales>unidad}" wrapping="false"/>
+							</t:template>
+						</t:Column>
+						<t:Column hAlign="End">
+							<Label text="Cantidad" />
+							<t:template>
+								
+								<Input value="{Materiales>cantidad}"/>
+							</t:template>
+						</t:Column>
+					</t:columns>
+				</t:Table>
+			</l:VerticalLayout>
+		</content>
+		<beginButton>
+			<Button text="Crear" type="Accept" press="onCreatePress"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancelar" type="Reject" press="onCancelPress"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

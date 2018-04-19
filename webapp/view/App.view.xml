@@ -18,7 +18,7 @@
 				<u:ShellHeadUserItem
 				    id = "shelluser"
 					image="sap-icon://person-placeholder"
-					username="{ path:'gblData>/User'}"
+					username="{ path:'gblUserData>/User'}"
 					press="handleUserItemPressed" />
 			</u:user>
 		

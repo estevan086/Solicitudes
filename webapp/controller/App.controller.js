@@ -8,10 +8,10 @@ sap.ui.define([
 
 		onInit: function() {
 
-			this.getView().setModel(new sap.ui.model.json.JSONModel(), "gblData");
+			this.getView().setModel(new sap.ui.model.json.JSONModel(), "gblUserData");
 			var that = this;
-			$.get("/Solicitudes/xs/logic.xsjs", function(result) {
-				that.getView().getModel("gblData").setData({
+			$.get("/Solicitudes/xs/UserName.xsjs", function(result) {
+				that.getView().getModel("gblUserData").setData({
 					User: result
 				});
 			});

@@ -11,11 +11,26 @@ function close(closables) {
 
 switch ($.request.method) {
 	case $.net.http.GET:
-		var parmCode = $.request.parameters.get('Codigo');
+		var parmCode = $.request.parameters.get('SolicitudId');
 		var arrPersonals = [];
-
-		strSql = parmCode ? "select * from S0019120377.Solicitudes.xs::Solicitud.SolHeader where CODIGO = " + parmCode :
-			"select * from S0019120377.Solicitudes.xs::Solicitud.SolHeader order by CODIGO";
+        var Estado = ''; 
+		var Pendiente = 'PEN';
+        var Activo  = 'ACT';
+        
+    	var UserRole = "EMP";
+        
+        //Valida el Rol del Usuario
+        if ( UserRole === "EMP" ){
+            Estado = Activo;
+        }
+        else{
+            Estado = Pendiente;
+        }
+        
+        //Asigna String de Consulta
+		strSql = 'select * from "PUBLIC"."SOLHEADER" Where "Estado" = ' + "'" + Estado +  "'"; 
+		
+		//	'select * from "PUBLIC"."SOLHEADER" ';
 
 		try {
 			statement = connection.prepareStatement(strSql);
@@ -24,15 +39,17 @@ switch ($.request.method) {
 
 			while (resultSet.next()) {
 				dataPersonal = {
-					CODIGO: resultSet.getInteger(1),
-					EMAIL: resultSet.getString(2),
-					FIRSTNAME: resultSet.getString(3),
-					LASTNAME: resultSet.getString(4),
-					AGE: resultSet.getString(5),
-					ADDRESS: resultSet.getString(6),
+				    SOLICITUDID: resultSet.getString(8),
+                    NUMEROPERSONA: resultSet.getString(1),
+					NOMBREPERSONA: resultSet.getString(2),
+					TIPOSOL: resultSet.getString(3),
+					ESTADO: resultSet.getString(4),
+					FECHAACTUAL: resultSet.getString(5),
+					FECHAPROBABLEPARTO: resultSet.getString(6),
+					ADJUNTO: resultSet.getBlob(7),
 					__metadata: {
 						type: "SolHeader",
-						uri: "/Solicitudes/SolHeader/SolHeader(" + resultSet.getInteger(1) + ")"
+						uri: "/Solicitudes/SolHeader/SolHeader(" + resultSet.getString(8) + ")"
 					}
 				};
 
@@ -43,9 +60,9 @@ switch ($.request.method) {
 
 			try {
 				var objPersonal = parmCode ? {
-					d: arrPersonals[0] ? arrPersonals[0] : {}
+					SolHeader: arrPersonals[0] ? arrPersonals[0] : {}
 				} : {
-					d: arrPersonals
+					SolHeader: arrPersonals
 				};
 				$.response.contentType = "application/json";
 				$.response.setBody(JSON.stringify(objPersonal));
@@ -60,19 +77,11 @@ switch ($.request.method) {
 	case $.net.http.PUT:
 		var sData = JSON.parse($.request.body.asString());
 
-		var strInsert = "insert into S0019120377.PERSONAL (EMAIL, FIRSTNAME, LASTNAME, AGE, ADDRESS, CODIGO) values(?,?,?,?,?,?)";
-		var strUpdate = "update S0019120377.PERSONAL set EMAIL=?, FIRSTNAME=?, LASTNAME=?, AGE=?, ADDRESS=? where CODIGO=?";
-
-		strSql = $.request.method === $.net.http.POST ? strInsert : strUpdate;
+		var strInsert = 'insert into "PUBLIC"."SOLHEADER" (SolicitudId, NumeroPersona, NombrePersona, TipoSol, Estado, FechaActual, FechaProbableParto, Adjunto) values("1","123","Carlos",?,"ACT","20180419","","")';
 
 		try {
 			statement = connection.prepareStatement(strSql);
-			statement.setString(1, sData.EMAIL);
-			statement.setString(2, sData.FIRSTNAME);
-			statement.setString(3, sData.LASTNAME);
-			statement.setString(4, sData.AGE);
-			statement.setString(5, sData.ADDRESS);
-			statement.setString(6, sData.CODIGO);
+			statement.setString(1, sData.TIPOSOL);
 			statement.execute();
 			connection.commit();
 		} finally {

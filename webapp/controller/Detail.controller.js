@@ -2,8 +2,10 @@
 sap.ui.define([
 		"com/Solicitudes/controller/BaseController",
 		"sap/ui/model/json/JSONModel",
-		"com/Solicitudes/model/formatter"
-	], function (BaseController, JSONModel, formatter) {
+		"com/Solicitudes/model/formatter",
+		"sap/m/MessageToast",
+	    "sap/m/UploadCollectionParameter"
+	], function (BaseController, JSONModel, formatter, MessageToast, UploadCollectionParameter) {
 		"use strict";
 
 		return BaseController.extend("com.Solicitudes.controller.Detail", {
@@ -28,6 +30,98 @@ sap.ui.define([
 				this.setModel(oViewModel, "detailView");
 
 				this.getOwnerComponent().getModel().metadataLoaded().then(this._onMetadataLoaded.bind(this));
+				
+				
+				// var sPath;
+
+    // 			// set mock data
+    // 			sPath = jQuery.sap.getModulePath("sap.m.sample.UploadCollectionVersioning", "/uploadCollection.json");
+    // 			this.getView().setModel(new JSONModel(sPath));
+    
+    // 			// Sets the text to the label
+    // 			this.getView().byId("UploadCollection").addEventDelegate({
+    // 				onBeforeRendering: function() {
+    // 					this.getView().byId("attachmentTitle").setText(this.getAttachmentTitleText());
+    // 				}.bind(this)
+    // 			});
+    
+    // 			// Flag to track if the upload of the new version was triggered by the Upload a new version button.
+    // 			this.bIsUploadVersion = false;
+				
+				
+				
+		    var oModel = new sap.ui.model.json.JSONModel();
+
+			oModel.setData({
+				DetalleSol: [
+					{
+						area: "01",
+						material: "Pantalon",
+						talla: "XL",
+						unidad: "UN"
+					},
+					{
+				    	area: "02",
+						material: "Camisa",
+						talla: "L",
+						unidad: "UN"
+					},
+					{
+						area: "03",
+						material: "Casco",
+						talla: "M",
+						unidad: "UN"
+					},
+					{
+						area: "04",
+						material: "Zapatos",
+						talla: "40",
+						unidad: "PAR"
+					}
+             ]
+			});
+          // var TblDetalleSol = sap.ui.getCore().getElementById("TableMisTallas");
+			this.getView().setModel(oModel, "items");
+				
+				
+		    var oModelLog = new sap.ui.model.json.JSONModel();
+
+			oModelLog.setData({
+				items: [
+					{
+						fecha: "20180417",
+					    hora: "10:01:02",
+						usuario: "CARLOSGU",
+						estado: "ACT",
+						comentario: "Inicio Solicitud"
+					},
+					{
+						fecha: "20180417",
+					    hora: "10:01:02",
+						usuario: "CARLOSGU",
+						estado: "PEN",
+						comentario: "Inicio Solicitud"
+					},
+					{
+						fecha: "20180417",
+					    hora: "10:01:02",
+						usuario: "CARLOSGU",
+						estado: "APR",
+						comentario: "Inicio Solicitud"
+					},
+					{
+						fecha: "20180417",
+					    hora: "10:01:02",
+						usuario: "DIEGOC",
+						estado: "REC",
+						comentario: "Rechazado"
+					}
+             ]
+			});
+            //var TblLog = sap.ui.getCore().getElementById("TableLog");
+            
+            this.getView().setModel(oModelLog, "Log");				
+				
 			},
 
 			/* =========================================================== */

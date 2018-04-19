@@ -7,7 +7,7 @@
 
 	<semantic:MasterPage
 		id="page"
-		title="{masterView>/title}"
+		title="{ path:'gblRoleData>/UserRole'} + {masterView>/title}"
 		navButtonPress="onNavBack"
 		showNavButton="true">
 		<semantic:subHeader>
@@ -41,7 +41,7 @@
 					groupHeaderFactory: '.createGroupHeader'
 				}"
 				busyIndicatorDelay="{masterView>/delay}"
-				noDataText="{masterView>/noDataText}"
+				noDataText="{masterView>/noDataText}" 
 				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
 				growing="true"
 				growingScrollToLoad="true"
@@ -62,7 +62,7 @@
 					<ObjectListItem
 						type="{= ${device>/system/phone} ? 'Active' : 'Inactive'}"
 						press="onSelectionChange"
-						title="{SolicitudId}"
+						title="{SOLICITUDID}"
 						numberUnit="{Estado}">
 					</ObjectListItem>
 				</items>
@@ -81,7 +81,7 @@
                         <FlexItemData growFactor="1" />
                       </layoutData>
                     </Button>
-    		        <Button icon="sap-icon://create-form" text="Crear" width="100%" press="onTallasPress" type="Emphasized">
+    		        <Button icon="sap-icon://create-form" text="Crear" width="100%" press="onAbrirVentanaCrearPress" type="Emphasized">
     		        <layoutData>
                         <FlexItemData growFactor="1" />
                       </layoutData>

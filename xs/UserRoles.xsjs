@@ -1,7 +1,16 @@
-function getUsername(){
+function getUserName(){
    var username =  $.session.getUsername();
    return username;
 }
-//var result = "User " + getUsername();
-var result = getUsername();
-$.response.setBody(result);
+function getUserRole(){
+   var userrole =  "EMP";
+   return userrole;
+}
+
+$.response.setBody(JSON.stringify(
+                            		{
+                            			"UserName" : getUserName(),
+                            			"UserRole" : getUserRole()
+                            		}
+                                )
+                   );

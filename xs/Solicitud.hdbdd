@@ -1,0 +1,46 @@
+namespace Solicitudes.xs;
+
+@Schema: 'S0019120377'
+
+context Solicitud { 
+    Entity SolHeader {
+        Key SolicitudId : String (10);
+        NumeroPersona : String (10);
+        NombrePersona : String (20);
+        TipoSol : String(3);
+        Estado : String(3);
+        FechaActual : LocalDate;
+        FechaProbableParto : LocalDate;
+        Adjunto : LargeBinary; 
+    };
+    
+    Entity SolDetail {
+        key SolicitudId : String (10); 
+        key SolicitudItem : String (10);
+        Estado : String(3);
+        Material : String(10);
+        Cantidad : Integer;
+    };
+    
+    Entity SolLog {
+        key IdSol : String (10);
+        key Sequence : Integer;
+        FechaActual : LocalDate;
+        Hora : LocalTime;
+        Usuario : String(10);
+        Estado : String(3);
+        Comentario : LargeString;
+    };
+    
+    Entity Measures {
+        key Sequence : Integer;
+        NumeroPersonal : String (10);
+        NumeroDirectorio : String (10);
+        Material : String (10);
+        Talla : String(10);
+        Estado : String(3);
+        Fecha : LocalDate;
+        Hora : LocalTime;
+    };
+
+};
