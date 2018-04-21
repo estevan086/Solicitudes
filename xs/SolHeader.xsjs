@@ -46,7 +46,10 @@ switch ($.request.method) {
 					ESTADO: resultSet.getString(5),
 					FECHAACTUAL: resultSet.getString(6),
 					FECHAPROBABLEPARTO: resultSet.getString(7),
-					ADJUNTO: resultSet.getBlob(8),
+					COMENTARIO: resultSet.getString(8),
+					ARCHIVODATA: resultSet.getBlob(9),
+					ARCHIVONOMBRE: resultSet.getString(10),
+					ARCHIVOTIPO: resultSet.getString(11),
 					__metadata: {
 						type: "SolHeader",
 						uri: "/Solicitudes/SolHeader/SolHeader(" + resultSet.getString(1) + ")"
@@ -95,7 +98,10 @@ switch ($.request.method) {
 					ESTADO: resultSet.getString(5),
 					FECHAACTUAL: resultSet.getString(6),
 					FECHAPROBABLEPARTO: resultSet.getString(7),
-					ADJUNTO: resultSet.getBlob(8),
+					COMENTARIO: resultSet.getString(8),
+					ARCHIVODATA: resultSet.getBlob(9),
+					ARCHIVONOMBRE: resultSet.getString(10),
+					ARCHIVOTIPO: resultSet.getString(11),
 					__metadata: {
 						type: "SolHeader",
 						uri: "/Solicitudes/SolHeader/SolHeader(" + resultSet.getString(1) + ")"
@@ -108,7 +114,13 @@ switch ($.request.method) {
 			//close([resultSet, statement, connection]);
 
 			try {
-				var SiguienteId = parseInt(dataPersonal.SOLICITUDID) + 1;
+				var SiguienteId;
+				if (arrPersonals.length > 0 ) { 
+			    	SiguienteId = parseInt(dataPersonal.SOLICITUDID) + 1;
+			   	}
+				else{
+				    SiguienteId = 1;
+				}
 			} catch (err) {
 				$.response.contentType = "text/plain";
 				$.response.setBody("Error while executing query: [" + err.message + "]");
@@ -117,7 +129,7 @@ switch ($.request.method) {
 		}
 
 		var strInsert =
-			'insert into "PUBLIC"."SOLHEADER" ("SolicitudId", "NumeroPersona", "NombrePersona", "TipoSol", "Estado", "FechaActual", "FechaProbableParto", "Adjunto") ' +
+			'insert into "PUBLIC"."SOLHEADER" ("SolicitudId", "NumeroPersona", "NombrePersona", "TipoSol", "Estado", "FechaActual", "FechaProbableParto", "Comentario", "ArchivoData", "ArchivoNombre", "ArchivoTipo") ' +
 			' values( ' +
 			" ?, " +
 			" '123', " +
@@ -126,16 +138,20 @@ switch ($.request.method) {
 			" 'ACT', " +
 			" '20180419', " +
 			" ' ', " +
+			" ?, " +
+			" ?, " +
+			" ?, " +
 			" ? " +
 			' ) ';
-
-		strSql = 'select * from "PUBLIC"."SOLHEADER" Where "Estado" = ' + "'" + Estado + "'";
 
 		try {
 			statement = connection.prepareStatement(strInsert);
 			statement.setString(1, SiguienteId.toString());
 			statement.setString(2, sData.TIPOSOL);
-			statement.setString(3, sData.ADJUNTO);
+			statement.setString(3, sData.COMENTARIO);
+			statement.setString(4, sData.ARCHIVODATA);
+			statement.setString(5, sData.ARCHIVONOMBRE);
+			statement.setString(6, sData.ARCHIVOTIPO);
 			statement.execute();
 			connection.commit();
 		} finally {

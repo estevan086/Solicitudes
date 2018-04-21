@@ -94,53 +94,8 @@
 						id="iconTabBarFilter2"
 						icon="sap-icon://attachment"
 						tooltip="{i18n>detailIconTabBarAttachments}">
-						<Text text="Adjuntos ..." />
-						<Image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" />
-							<Link
-						text="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
-						emphasized="true"
-						href="{Adjuntos/0/items/url}" />
-						<Button id="btnDownload" enabled="true" type="Emphasized" press="fnDownload" text="Download PDF" icon="sap-icon://download"/>
+						<Button id="btnDownload" enabled="true" type="Emphasized" press="fnDownload" text="Descargar PDF" icon="sap-icon://download"/>
 						
-						<t:Table
-				id="TableAdjuntos"
-				rows="{Adjuntos>/items}"
-				selectionMode="MultiToggle"
-				visibleRowCount="7"
-				ariaLabelledBy="title">
-							<t:toolbar>
-								<Toolbar>
-									<Title id="titleAdj" text="Adjuntos"></Title>
-									<ToolbarSpacer/>
-								</Toolbar>
-							</t:toolbar>
-							<t:columns>
-								<t:Column>
-									<Label text="Area Dotación" />
-									<t:template>
-										<Text text="{Adjuntos>area}" wrapping="true"/>
-									</t:template>
-								</t:Column>
-								<t:Column>
-									<Label text="Material" />
-									<t:template>
-										<Text text="{Adjuntos>material}" wrapping="true"/>
-									</t:template>
-								</t:Column>
-								<t:Column>
-									<Label text="Talla" />
-									<t:template>
-										<Text text="{Adjuntos>talla}" wrapping="false"/>
-									</t:template>
-								</t:Column>
-								<t:Column width="9rem">
-            						<Label text="Image" />
-            						<t:template>
-            							<Link text="Show Image" href="{Adjuntos>url}" target="_blank"/>
-            						</t:template>
-            					</t:Column>
-							</t:columns>
-						</t:Table>
 					</IconTabFilter>
 					<IconTabFilter
 						id="iconTabBarFilter3"

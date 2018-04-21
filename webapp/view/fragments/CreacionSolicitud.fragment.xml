@@ -18,8 +18,7 @@
 					change="fnHandleTipoSolicitud"
 					selectedKey=""
 					items="{
-						path: 'TiposSol>/items',
-						sorter: { path: 'TiposSol>key' }
+						path: 'TiposSol>/items'
 					}">
 					<core:Item key="{TiposSol>key}" text="{TiposSol>text}" />
 				</Select>

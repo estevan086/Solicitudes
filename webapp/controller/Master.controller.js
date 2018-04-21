@@ -521,66 +521,34 @@ sap.ui.define([
 				MessageToast.show("Choose a file first");
 				return;
 			}
-			oFileUploader.upload();
+			
+			//oFileUploader.upload();
 
 			var file = jQuery.sap.domById(oFileUploader.getId() + "-fu").files[0];
 			var filename = oFileUploader.getValue();
-			//var filename = file.name;
 
 			var BASE64_MARKER = 'data:' + file.type + ';base64,';
 
 			var reader = new FileReader();
 
-			// reader.onload = (function(theFile) {
-			//      return function(evt) {
-			//          //var base64Index = evt.target.result.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-			//          //var base64 = evt.target.result.substring(base64Index);
-			//          alert('Procesado');
-			//      }
-			// })(file);
-
 			var resultBinary;
 
-			that = this;
+			var that = this;
 			reader.onload = function(evn) {
-				that.resultBinary = evn.target.result; //string in CSV 
-				//var base64file = btoa(that.resultBinary);
-				//var base64file;
-				//alert(that.resultBinary);
-				//alert(base64file);
-				alert("Procesado");
-
-				var a = that.window.document.createElement('a');
-
-				//PDF Fijo Funcionando
-				a.href = that.window.URL.createObjectURL(new Blob(that.resultBinary, {
-					type: 'application/octet-stream'
-				}));
-
-				a.download = "Prueba.pdf";
-
-				// Append anchor to body.
-				that.document.body.appendChild(a);
-				a.click();
-
-				// Remove anchor from body
-				that.document.body.removeChild(a);
-
+				that.resultBinary = evn.target.result; //string in PDF
 			};
 
-			reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
 			// reader.readAsArrayBuffer(file);
 			// reader.readAsBinaryString(file);
 			// reader.readAsText(file);  
-
-			//alert(that.resultBinary);
 
 			var oStData = {
 				TIPOSOL: sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey(),
 				DESCRIPCION: sap.ui.getCore().byId("frmDescripcion").getValue(),
 				FECHAPARTO: sap.ui.getCore().byId("DPFechaParto").getValue(),
 				DESCUENTO: sap.ui.getCore().byId("CbDscto").getSelected(),
-				ADJUNTO: that.resultBinary,
+				ARCHIVODATA: that.resultBinary,
 				MATERIALES: oModelMateriales
 			};
 
