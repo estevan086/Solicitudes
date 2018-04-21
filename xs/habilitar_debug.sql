@@ -1,1 +1,2 @@
+alter system alter configuration ('xsengine.ini','SYSTEM')set ('debugger','enabled')='true' with reconfigure;
 alter system alter configuration ('xsengine.ini','SYSTEM') set  ('httpserver','developer_mode')='true' with reconfigure

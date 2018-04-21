@@ -6,8 +6,10 @@ sap.ui.define([
 		"sap/ui/model/FilterOperator",
 		"sap/m/GroupHeaderListItem",
 		"sap/ui/Device",
-		"com/Solicitudes/model/formatter"
-	], function(BaseController, JSONModel, Filter, FilterOperator, GroupHeaderListItem, Device, formatter) {
+		"com/Solicitudes/model/formatter",
+		"sap/m/MessageBox",
+		"sap/m/MessageToast"
+	], function(BaseController, JSONModel, Filter, FilterOperator, GroupHeaderListItem, Device, formatter, MessageBox, MessageToast) {
 	"use strict";
 
 	return BaseController.extend("com.Solicitudes.controller.Master", {
@@ -89,7 +91,7 @@ sap.ui.define([
 			});
 
 		},
-		
+
 		/**
 		 * After list data is available, this handler method updates the
 		 * master list counter and hides the pull to refresh control, if
@@ -233,7 +235,7 @@ sap.ui.define([
 				delay: 0,
 				title: this.getResourceBundle().getText("masterTitleCount", [0]),
 				noDataText: this.getResourceBundle().getText("masterListNoDataText"),
-				sortBy: "TipoSol",
+				//sortBy: "TipoSol",
 				groupBy: "None"
 			});
 		},
@@ -340,11 +342,11 @@ sap.ui.define([
 		},
 
 		onTallasPress: function() {
-		   
-		   	this._CreateDialog = sap.ui.xmlfragment("com.Solicitudes.view.fragments.Tallas", this);	
+
+			this._CreateDialog = sap.ui.xmlfragment("com.Solicitudes.view.fragments.Tallas", this);
 			this._CreateDialog.open();
-			
-		    var oModel = new sap.ui.model.json.JSONModel();
+
+			var oModel = new sap.ui.model.json.JSONModel();
 
 			oModel.setData({
 				items: [
@@ -355,7 +357,7 @@ sap.ui.define([
 						unidad: "UN"
 					},
 					{
-				    	area: "02",
+						area: "02",
 						material: "Camisa",
 						talla: "L",
 						unidad: "UN"
@@ -374,12 +376,11 @@ sap.ui.define([
 					}
              ]
 			});
-            var TblTallas = sap.ui.getCore().getElementById("TableMisTallas");
-            
-            TblTallas.setModel(oModel, "Tallas");
+			var TblTallas = sap.ui.getCore().getElementById("TableMisTallas");
+
+			TblTallas.setModel(oModel, "Tallas");
 			//this.getView().setModel(oModel, "Tallas");
-				
-			
+
 		},
 
 		onActualizarTallasPress: function() {
@@ -406,8 +407,8 @@ sap.ui.define([
 		onAbrirVentanaCrearPress: function() {
 			this._CreateDialog = sap.ui.xmlfragment("com.Solicitudes.view.fragments.CreacionSolicitud", this);
 			this._CreateDialog.open();
-			
-		    var oModel = new sap.ui.model.json.JSONModel();
+
+			var oModel = new sap.ui.model.json.JSONModel();
 
 			oModel.setData({
 				items: [
@@ -425,14 +426,13 @@ sap.ui.define([
 					}
              ]
 			});
-            //var CbTiposSol = sap.ui.getCore().getElementById("CbTiposSol");
+			//var CbTiposSol = sap.ui.getCore().getElementById("CbTiposSol");
 			//CbTiposSol.setModel(oModel);
-			
+
 			var SlTiposSol = sap.ui.getCore().getElementById("SlTiposSol");
-			SlTiposSol.setModel(oModel,"TiposSol");
-			
-			
-		    var oModelMateriales = new sap.ui.model.json.JSONModel();
+			SlTiposSol.setModel(oModel, "TiposSol");
+
+			var oModelMateriales = new sap.ui.model.json.JSONModel();
 
 			oModelMateriales.setData({
 				items: [
@@ -444,7 +444,7 @@ sap.ui.define([
 						cantidad: "2"
 					},
 					{
-				    	material: "002",
+						material: "002",
 						descripcion: "Camisa",
 						talla: "L",
 						unidad: "UN",
@@ -466,79 +466,181 @@ sap.ui.define([
 					}
              ]
 			});
-            var TblMateriales = sap.ui.getCore().getElementById("TableMisMateriales");
-            
-            TblMateriales.setModel(oModelMateriales, "Materiales");
-			
+			var TblMateriales = sap.ui.getCore().getElementById("TableMisMateriales");
+
+			TblMateriales.setModel(oModelMateriales, "Materiales");
+
 		},
 
-        fnHandleTipoSolicitud: function(oEvent){
-            
-            if (oEvent.oSource.getSelectedKey()) {
-                //var vTipoSol = oEvent.mParameters.selectedItem.mProperties.key;
-                //var vTipoSol2 = sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey();
-                var vTipoSol = oEvent.oSource.getSelectedKey();
-            }
-            else {
-                return;
-            }
-            
-            //var bt = oEvent.getSource();
-            var LblFechaParto = sap.ui.getCore().getElementById("LblFechaParto");
-            var DPFechaParto = sap.ui.getCore().getElementById("DPFechaParto");
-            var LblFileEmbarazo = sap.ui.getCore().getElementById("Lblfile");
-            var FileEmbarazo = sap.ui.getCore().getElementById("fileUploader");
-            
-            if (vTipoSol !== "01") {
-                LblFechaParto.setVisible(false);
-                DPFechaParto.setVisible(false);
-                LblFileEmbarazo.setVisible(false);
-                FileEmbarazo.setVisible(false);
-                //bt.setText("Show");
-            } else {
-                LblFechaParto.setVisible(true);
-                DPFechaParto.setVisible(true);
-                LblFileEmbarazo.setVisible(true);
-                FileEmbarazo.setVisible(true);
-                //bt.setText("Hide");
-            }
-            //var text = select.getSelectedItem().getText();
-        },
-        
-		onCreatePress: function() {
-		    
-		    var iRowIndex = 0;  //For First row in the table
-            var oTable = sap.ui.getCore().byId("TableMisMateriales"),
-                oModelMateriales = oTable.getModel("Materiales").oData.items;
-               // aItems = oTable.getItems();
-            
-            // if(iRowIndex < aItems.length){
-            //   oModel.getProperty("ColA",aItems[iRowIndex].getBindingContext());
-            // }
+		fnHandleTipoSolicitud: function(oEvent) {
+
+			if (oEvent.oSource.getSelectedKey()) {
+				//var vTipoSol = oEvent.mParameters.selectedItem.mProperties.key;
+				//var vTipoSol2 = sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey();
+				var vTipoSol = oEvent.oSource.getSelectedKey();
+			} else {
+				return;
+			}
+
+			//var bt = oEvent.getSource();
+			var LblFechaParto = sap.ui.getCore().getElementById("LblFechaParto");
+			var DPFechaParto = sap.ui.getCore().getElementById("DPFechaParto");
+			var LblFileEmbarazo = sap.ui.getCore().getElementById("Lblfile");
+			var FileEmbarazo = sap.ui.getCore().getElementById("fileUploader");
+
+			if (vTipoSol !== "01") {
+				LblFechaParto.setVisible(false);
+				DPFechaParto.setVisible(false);
+				LblFileEmbarazo.setVisible(false);
+				FileEmbarazo.setVisible(false);
+				//bt.setText("Show");
+			} else {
+				LblFechaParto.setVisible(true);
+				DPFechaParto.setVisible(true);
+				LblFileEmbarazo.setVisible(true);
+				FileEmbarazo.setVisible(true);
+				//bt.setText("Hide");
+			}
+			//var text = select.getSelectedItem().getText();
+		},
+
+		onCreatePress: function(oEvent) {
+
+			var iRowIndex = 0; //For First row in the table
+			var oTable = sap.ui.getCore().byId("TableMisMateriales"),
+				oModelMateriales = oTable.getModel("Materiales").oData.items;
+			// aItems = oTable.getItems();
+
+			// if(iRowIndex < aItems.length){
+			//   oModel.getProperty("ColA",aItems[iRowIndex].getBindingContext());
+			// }
+
+			//Obtiene Archivo Subido si el Tipo de Solicitud es Materno
+			var oFileUploader = sap.ui.getCore().byId("fileUploader");
+			if (!oFileUploader.getValue()) {
+				MessageToast.show("Choose a file first");
+				return;
+			}
+			oFileUploader.upload();
+
+			var file = jQuery.sap.domById(oFileUploader.getId() + "-fu").files[0];
+			var filename = oFileUploader.getValue();
+			//var filename = file.name;
+
+			var BASE64_MARKER = 'data:' + file.type + ';base64,';
+
+			var reader = new FileReader();
+
+			// reader.onload = (function(theFile) {
+			//      return function(evt) {
+			//          //var base64Index = evt.target.result.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+			//          //var base64 = evt.target.result.substring(base64Index);
+			//          alert('Procesado');
+			//      }
+			// })(file);
+
+			var resultBinary;
+
+			that = this;
+			reader.onload = function(evn) {
+				that.resultBinary = evn.target.result; //string in CSV 
+				//var base64file = btoa(that.resultBinary);
+				//var base64file;
+				//alert(that.resultBinary);
+				//alert(base64file);
+				alert("Procesado");
+
+				var a = that.window.document.createElement('a');
+
+				//PDF Fijo Funcionando
+				a.href = that.window.URL.createObjectURL(new Blob(that.resultBinary, {
+					type: 'application/octet-stream'
+				}));
+
+				a.download = "Prueba.pdf";
+
+				// Append anchor to body.
+				that.document.body.appendChild(a);
+				a.click();
+
+				// Remove anchor from body
+				that.document.body.removeChild(a);
+
+			};
+
+			reader.readAsDataURL(file);
+			// reader.readAsArrayBuffer(file);
+			// reader.readAsBinaryString(file);
+			// reader.readAsText(file);  
+
+			//alert(that.resultBinary);
 
 			var oStData = {
-				TIPOSOL		: sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey(),
-				DESCRIPCION	: sap.ui.getCore().byId("frmDescripcion").getValue(),
-				FECHAPARTO	: sap.ui.getCore().byId("DPFechaParto").getValue(),
-				DESCUENTO	: sap.ui.getCore().byId("CbDscto").getSelected(),
-				MATERIALES  : oModelMateriales
+				TIPOSOL: sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey(),
+				DESCRIPCION: sap.ui.getCore().byId("frmDescripcion").getValue(),
+				FECHAPARTO: sap.ui.getCore().byId("DPFechaParto").getValue(),
+				DESCUENTO: sap.ui.getCore().byId("CbDscto").getSelected(),
+				ADJUNTO: that.resultBinary,
+				MATERIALES: oModelMateriales
 			};
-			
-			this.getView().getModel().create("/SolHeader", oStData, {
-				success: jQuery.proxy(function(mResponse) {
-					this._CreateDialog.close();
-					this._CreateDialog.destroy();
-				}, this),
-				error: jQuery.proxy(function() {
-					console.log("error");
-				}, this)
+
+			var sParameters = ' ';
+
+			var that = this;
+			$.post("/Solicitudes/xs/SolHeader.xsjs", JSON.stringify(oStData), function(result) {
+				var resultJSON = result;
+
+				//var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+				MessageBox.information(
+					"Se ha creado la Solicitud: " + resultJSON
+				);
+				that._CreateDialog.close();
+				that._CreateDialog.destroy();
+
+				//Valida Rol del usuario y Obtiene datos de las Solicitudes según el Rol 
+				var that2 = that;
+				$.get("/Solicitudes/xs/SolHeader.xsjs", function(resultQRy) {
+					var resultJSONQry = resultQRy;
+					var oModel = new sap.ui.model.json.JSONModel();
+					oModel.setData(resultJSONQry);
+					that2.getView().setModel(oModel);
+
+					that2._updateListItemCount(Object.keys(resultJSONQry.SolHeader).length);
+
+				});
 			});
+
+			//GOOD
+			// 			var that = this;
+			// 			jQuery.ajax({
+			//                       url: "/Solicitudes/xs/SolHeader.xsjs",
+			//                       async :false,
+			//                       TYPE: 'POST' ,
+			//                       data: oStData,
+			//                       dataType: 'text',
+			//                       success: function(mResponse) {
+			//                           alert("Bueno");
+			//                           console.log(mResponse);
+			//                           that._CreateDialog.close();
+			//                 		  that._CreateDialog.destroy();
+			//                       }
+			//               });
+
+			// 			this.getView().getModel().create("/Solicitudes/xs/SolHeader", oStData, {
+			// 				success: jQuery.proxy(function(mResponse) {
+			// 					this._CreateDialog.close();
+			// 					this._CreateDialog.destroy();
+			// 				}, this),
+			// 				error: jQuery.proxy(function() {
+			// 					console.log("error");
+			// 				}, this)
+			// 			});
 		},
-		
+
 		onCancelPress: function() {
 			this._CreateDialog.close();
 			this._CreateDialog.destroy();
-		}
+		},
 
 		/**
 		 * After list data is available, this handler method updates the
@@ -548,6 +650,46 @@ sap.ui.define([
 		 * @public
 		 */
 
+		handleUploadComplete: function(oEvent) {
+			var sResponse = oEvent.getParameter("response");
+			if (sResponse) {
+				var sMsg = "";
+				// var m = /^\[(\d\d\d)\]:(.*)$/.exec(sResponse);
+				// if (m[1] == "200") {
+				// 	sMsg = "Return Code: " + m[1] + "\n" + m[2] + "(Upload Success)";
+				// 	oEvent.getSource().setValue("");
+				// } else {
+				// 	sMsg = "Return Code: " + m[1] + "\n" + m[2] + "(Upload Error)";
+				// }
+
+				// MessageToast.show(sMsg);
+			}
+		},
+
+		handleUploadPress: function(oEvent) {
+			var oFileUploader = this.getView().byId("fileUploader");
+			if (!oFileUploader.getValue()) {
+				MessageToast.show("Choose a file first");
+				return;
+			}
+			oFileUploader.upload();
+		},
+
+		handleTypeMissmatch: function(oEvent) {
+			var aFileTypes = oEvent.getSource().getFileType();
+			jQuery.each(aFileTypes, function(key, value) {
+				aFileTypes[key] = "*." + value;
+			});
+			var sSupportedFileTypes = aFileTypes.join(", ");
+			MessageToast.show("The file type *." + oEvent.getParameter("fileType") +
+				" is not supported. Choose one of the following types: " +
+				sSupportedFileTypes);
+		},
+
+		handleValueChange: function(oEvent) {
+			MessageToast.show("Press 'Upload File' to upload file '" +
+				oEvent.getParameter("newValue") + "'");
+		}
 	});
 
 });
