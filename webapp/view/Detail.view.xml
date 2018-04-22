@@ -49,7 +49,7 @@
 						icon="sap-icon://hint"
 						tooltip="{i18n>detailIconTabBarInfo}">
 						<Text text="Comentarios" />
-						<TextArea value="Solicitud Prueba " growing="true" growingMaxLines="7" width="100%"/>
+						<TextArea value="{Comentario}" growing="true" growingMaxLines="7" width="100%" editable="false"/>
 						<t:Table
 				id="TableMisTallas"
 				rows="{DetalleSol>/items}"
@@ -94,6 +94,11 @@
 						id="iconTabBarFilter2"
 						icon="sap-icon://attachment"
 						tooltip="{i18n>detailIconTabBarAttachments}">
+						<MessageStrip
+						id = "MsgStrip"
+            			type="Info"
+            			showIcon="true"
+            			text="Este tipo de Solicitud no contiene Archivos Adjuntos."/>
 						<Button id="btnDownload" enabled="true" type="Emphasized" press="fnDownload" text="Descargar PDF" icon="sap-icon://download"/>
 						
 					</IconTabFilter>

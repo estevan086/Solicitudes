@@ -14,7 +14,7 @@ context Solicitud {
         Comentario : LargeString;
         ArchivoData : LargeBinary; 
         ArchivoNombre : LargeString; 
-        ArchivoTipo : String(10);  
+        ArchivoTipo : String(50);  
     };
     
     Entity SolDetail {
