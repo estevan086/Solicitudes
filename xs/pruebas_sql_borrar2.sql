@@ -1,4 +1,4 @@
-SELECT TOP 1
-* From
+SELECT *
+From
 "PUBLIC"."SOLHEADER"
-ORDER BY "SolicitudId" Desc;
+ORDER BY  CAST ( "SolicitudId" AS INTEGER)  Desc;
