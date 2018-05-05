@@ -12,7 +12,7 @@
 			<l:VerticalLayout>
 			
 				<t:Table
-				id="TableMisTallas"
+				id="TableMisTallasFragment"
 				rows="{Tallas>/items}"
 				selectionMode="MultiToggle"
 				visibleRowCount="7"
@@ -33,14 +33,20 @@
 						<t:Column>
 							<Label text="Material" />
 							<t:template>
-								<Text text="{Tallas>material}" wrapping="false"/>
+								<Text text="{Tallas>Matnr}" wrapping="false"/>
 							</t:template>
 						</t:Column>
+						<t:Column>
+							<Label text="Descripción" />
+							<t:template>
+								<Text text="{Tallas>Maktx}" wrapping="true"/>
+							</t:template>
+						</t:Column>						
 						<t:Column hAlign="Start">
 							<Label text="Talla" />
 							<t:template>
-							    <Input value="{Tallas>talla}"/>
-							</t:template>
+							    <Input value="{Tallas>Talla}"/>
+							</t:template> 
 						</t:Column>
 						<t:Column hAlign="Start">
 							<Label text="Unidad de Medida" />
@@ -53,7 +59,7 @@
 			</l:VerticalLayout>
 		</content>
 		<beginButton>
-			<Button text="Crear" type="Accept" press="onCreatePress"/>
+			<Button text="Crear" type="Accept" press="onUpdateTallasPress"/>
 		</beginButton>
 		<endButton>
 			<Button text="Cancelar" type="Reject" press="onCancelPress"/>

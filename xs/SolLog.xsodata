@@ -1,0 +1,3 @@
+service{
+	"S0019120377"."Solicitudes.xs::Solicitud.SolLog" as "SolLog";   
+}

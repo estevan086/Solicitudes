@@ -72,13 +72,13 @@
 								<t:Column>
 									<Label text="Material" />
 									<t:template>
-										<Text text="{DetalleSol>material}" wrapping="true"/>
+										<Text text="{DetalleSol>MATERIAL}" wrapping="true"/>
 									</t:template>
 								</t:Column>
 								<t:Column>
 									<Label text="Talla" />
 									<t:template>
-										<Text text="{DetalleSol>talla}" wrapping="false"/>
+										<Text text="{DetalleSol>TALLA}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column hAlign="Start">
@@ -110,7 +110,7 @@
 				id="TableLog"
 				rows="{Log>/items}"
 				selectionMode="MultiToggle"
-				visibleRowCount="7"
+				visibleRowCount="5"
 				ariaLabelledBy="title">
 							<t:toolbar>
 								<Toolbar>
@@ -122,31 +122,31 @@
 								<t:Column>
 									<Label text="Fecha" />
 									<t:template>
-										<Text text="{Log>fecha}" wrapping="true"/>
+										<Text text="{Log>FECHAACTUAL}" wrapping="true"/>
 									</t:template>
 								</t:Column>
 								<t:Column>
 									<Label text="Hora" />
 									<t:template>
-										<Text text="{Log>hora}" wrapping="true"/>
+										<Text text="{Log>HORAACTUAL}" wrapping="true"/>
 									</t:template>
 								</t:Column>
 								<t:Column>
 									<Label text="Usuario" />
 									<t:template>
-										<Text text="{Log>usuario}" wrapping="false"/>
+										<Text text="{Log>USUARIO}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column hAlign="Start">
 									<Label text="Estado" />
 									<t:template>
-										<Text text="{Log>estado}" wrapping="false"/>
+										<Text text="{Log>ESTADO}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column hAlign="Start">
 									<Label text="Comentario" />
 									<t:template>
-										<Text text="{Log>comentario}" wrapping="false"/>
+										<Text text="{Log>COMENTARIO}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 							</t:columns>

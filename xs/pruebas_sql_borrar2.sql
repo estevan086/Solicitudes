@@ -1,4 +1,1 @@
-SELECT *
-From
-"PUBLIC"."SOLHEADER"
-ORDER BY  CAST ( "SolicitudId" AS INTEGER)  Desc;
+select "SolicitudId", "Sequence", "FechaActual", "HoraActual", "Usuario", "Estado", "Comentario" from "PUBLIC"."SOLLOG" Where "SolicitudId" = '17'  

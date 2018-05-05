@@ -26,10 +26,10 @@ context Solicitud {
     };
     
     Entity SolLog {
-        key IdSol : String (10);
+        key SolicitudId : String (10);
         key Sequence : Integer;
         FechaActual : LocalDate;
-        Hora : LocalTime;
+        HoraActual : LocalTime;
         Usuario : String(10);
         Estado : String(3);
         Comentario : LargeString;
@@ -37,7 +37,7 @@ context Solicitud {
     
     Entity Measures {
         key Sequence : Integer;
-        NumeroPersonal : String (10);
+        NumeroPersona : String (10);
         NumeroDirectorio : String (10);
         Material : String (10);
         Talla : String(10);
@@ -45,5 +45,10 @@ context Solicitud {
         Fecha : LocalDate;
         Hora : LocalTime;
     };
-
+    
+    Entity SolTipos {
+        key TipoSol : String(3);
+        Descripcion : String (30);
+        FileIndicator : String (1);
+    };
 };

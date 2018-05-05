@@ -74,7 +74,20 @@ sap.ui.define([
 				var oModel = new sap.ui.model.json.JSONModel();
 				oModel.setData(resultJSON);
 				that.getView().setModel(oModel);
-
+                var oModel2 = that.getView().getModel();
+                var oView = that.getView();
+                var oList = oView.byId("list");
+                var oBinding = oList.getBinding("items");
+         
+                var SORTKEY = "SOLICITUDID";
+                var DESCENDING = false;
+                var GROUP = false;
+                var aSorter = [];
+        
+                aSorter.push(new sap.ui.model.Sorter(SORTKEY, DESCENDING, GROUP));
+                oBinding.sort(aSorter);
+                oModel2.refresh();
+                
 				that._updateListItemCount(Object.keys(resultJSON.SolHeader).length);
 
 			});
@@ -345,65 +358,84 @@ sap.ui.define([
 
 			this._CreateDialog = sap.ui.xmlfragment("com.Solicitudes.view.fragments.Tallas", this);
 			this._CreateDialog.open();
+            sap.ui.core.BusyIndicator.show(0);
 
-			var oModel = new sap.ui.model.json.JSONModel();
+			//Valida Rol del usuario y Obtiene datos de Log de Solicitudes según el Rol 
+			var oCedula = '';
+// 			oCedula = '1010163697';
+			oCedula = '80926574';
+			var that = this;
+			$.get("/Solicitudes/destination/MisTallas.xsjs?Cedula=" + oCedula , function(result) {
+				var oModelTallas = new sap.ui.model.json.JSONModel();
+                oModelTallas.setData(result);
+                var TblTallas = sap.ui.getCore().getElementById("TableMisTallasFragment");
+                TblTallas.setModel(oModelTallas, "Tallas");
+                sap.ui.core.BusyIndicator.hide();
+			});			
+			
+// 			var oModel = new sap.ui.model.json.JSONModel();
 
-			oModel.setData({
-				items: [
-					{
-						area: "01",
-						material: "Pantalon",
-						talla: "XL",
-						unidad: "UN"
-					},
-					{
-						area: "02",
-						material: "Camisa",
-						talla: "L",
-						unidad: "UN"
-					},
-					{
-						area: "03",
-						material: "Casco",
-						talla: "M",
-						unidad: "UN"
-					},
-					{
-						area: "04",
-						material: "Zapatos",
-						talla: "40",
-						unidad: "PAR"
-					}
-             ]
-			});
-			var TblTallas = sap.ui.getCore().getElementById("TableMisTallas");
+// 			oModel.setData({
+// 				items: [
+// 					{
+// 						area: "01",
+// 						material: "Pantalon",
+// 						talla: "XL",
+// 						unidad: "UN"
+// 					},
+// 					{
+// 						area: "02",
+// 						material: "Camisa",
+// 						talla: "L",
+// 						unidad: "UN"
+// 					},
+// 					{
+// 						area: "03",
+// 						material: "Casco",
+// 						talla: "M",
+// 						unidad: "UN"
+// 					},
+// 					{
+// 						area: "04",
+// 						material: "Zapatos",
+// 						talla: "40",
+// 						unidad: "PAR"
+// 					}
+//              ]
+// 			});
 
-			TblTallas.setModel(oModel, "Tallas");
-			//this.getView().setModel(oModel, "Tallas");
+// 			var TblTallas = sap.ui.getCore().getElementById("TableMisTallasFragment");
 
-		},
+// 			TblTallas.setModel(oModel, "Tallas");
+		
+ 		},
 
-		onActualizarTallasPress: function() {
+        onUpdateTallasPress: function(oEvent) {
+            debugger;
+			var iRowIndex = 0; //For First row in the table
+			var oTable = sap.ui.getCore().byId("TableMisTallasFragment"),
+				oModelMateriales = oTable.getModel("Tallas").oData.items;
+				
 			var oStData = {
-				CODIGO: sap.ui.getCore().byId("frmCode").getValue(),
-				EMAIL: sap.ui.getCore().byId("frmMail").getValue(),
-				FIRSTNAME: sap.ui.getCore().byId("frmFName").getValue(),
-				LASTNAME: sap.ui.getCore().byId("frmLName").getValue(),
-				AGE: sap.ui.getCore().byId("frmAge").getValue(),
-				ADDRESS: sap.ui.getCore().byId("frmAddress").getValue()
+				MATERIALES: oModelMateriales
 			};
 
-			this.getView().getModel().create("/Personal", oStData, {
-				success: jQuery.proxy(function(mResponse) {
-					this._CreateDialog.close();
-					this._CreateDialog.destroy();
-				}, this),
-				error: jQuery.proxy(function() {
-					console.log("error");
-				}, this)
-			});
-		},
+			var sParameters = ' ';
 
+			var that = this;
+			$.post("/Solicitudes/xs/Measures.xsjs", JSON.stringify(oStData), function(result) {
+				var resultJSON = result;
+
+				//var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+				MessageBox.information(
+					"Se ha registrado la actualización de Tallas: " + resultJSON
+				);
+				that._CreateDialog.close();
+				that._CreateDialog.destroy();
+			});
+
+		},
+		
 		onAbrirVentanaCrearPress: function() {
 			this._CreateDialog = sap.ui.xmlfragment("com.Solicitudes.view.fragments.CreacionSolicitud", this);
 			this._CreateDialog.open();
@@ -506,50 +538,65 @@ sap.ui.define([
 
 		onCreatePress: function(oEvent) {
 
-			var iRowIndex = 0; //For First row in the table
-			var oTable = sap.ui.getCore().byId("TableMisMateriales"),
-				oModelMateriales = oTable.getModel("Materiales").oData.items;
-			// aItems = oTable.getItems();
+			var TipoSolicitud = sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey();
 
-			// if(iRowIndex < aItems.length){
-			//   oModel.getProperty("ColA",aItems[iRowIndex].getBindingContext());
-			// }
-
-			//Obtiene Archivo Subido si el Tipo de Solicitud es Materno
-			var oFileUploader = sap.ui.getCore().byId("fileUploader");
-			if (!oFileUploader.getValue()) {
-				MessageToast.show("Choose a file first");
+			if (typeof TipoSolicitud === "undefined" || TipoSolicitud === null || TipoSolicitud === "") {
+				MessageToast.show("Debe seleccionar un Tipo de Solicitud");
 				return;
 			}
 			
-			//oFileUploader.upload();
+			var iRowIndex = 0; //For First row in the table
+			var oTable = sap.ui.getCore().byId("TableMisMateriales"),
+				oModelMateriales = oTable.getModel("Materiales").oData.items;
+				
+			var oSelectedItems = oTable.getSelectedIndices();
+			var aSelectedItems = [];
+            for (var i=0; i<oSelectedItems.length;i++) {
+                 if (oModelMateriales[oSelectedItems[i]]) {
+                      aSelectedItems.push(oModelMateriales[oSelectedItems[i]]);
+                 }
+            }
 
-			var file = jQuery.sap.domById(oFileUploader.getId() + "-fu").files[0];
-			var filename = oFileUploader.getValue();
-
-			var BASE64_MARKER = 'data:' + file.type + ';base64,';
-
-			var reader = new FileReader();
-
+			//Obtiene Archivo Subido si el Tipo de Solicitud es Materno
 			var resultBinary;
-
+			var file;
+			var filename;
+			var filetype;
 			var that = this;
-			reader.onload = function(evn) {
-				that.resultBinary = evn.target.result; //string in PDF
-			};
+			if (TipoSolicitud === "01") {
+				var oFileUploader = sap.ui.getCore().byId("fileUploader");
+				if (!oFileUploader.getValue()) {
+					MessageToast.show("Choose a file first");
+					return;
+				}
 
-            reader.readAsDataURL(file);
-			// reader.readAsArrayBuffer(file);
-			// reader.readAsBinaryString(file);
-			// reader.readAsText(file);  
+				//oFileUploader.upload();
+
+			    file = jQuery.sap.domById(oFileUploader.getId() + "-fu").files[0];
+				filename = oFileUploader.getValue();
+				filetype = file.type;
+
+				var BASE64_MARKER = 'data:' + file.type + ';base64,';
+
+				var reader = new FileReader();
+
+				reader.onload = function(evn) {
+					that.resultBinary = evn.target.result; //string in PDF
+				};
+
+				reader.readAsDataURL(file);
+			}
 
 			var oStData = {
 				TIPOSOL: sap.ui.getCore().getElementById("SlTiposSol").getSelectedKey(),
 				DESCRIPCION: sap.ui.getCore().byId("frmDescripcion").getValue(),
 				FECHAPARTO: sap.ui.getCore().byId("DPFechaParto").getValue(),
 				DESCUENTO: sap.ui.getCore().byId("CbDscto").getSelected(),
+		    	COMENTARIO: sap.ui.getCore().byId("frmDescripcion").getValue(),	
 				ARCHIVODATA: that.resultBinary,
-				MATERIALES: oModelMateriales
+				ARCHIVONOMBRE: filename,
+				ARCHIVOTIPO: filetype,
+				MATERIALES: aSelectedItems
 			};
 
 			var sParameters = ' ';
@@ -604,6 +651,7 @@ sap.ui.define([
 			// 				}, this)
 			// 			});
 		},
+
 
 		onCancelPress: function() {
 			this._CreateDialog.close();

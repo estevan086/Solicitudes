@@ -1,0 +1,9 @@
+host = "sapdessun.colsubsidio.com";
+port = 8000;
+pathPrefix = "/sap/opu/odata/sap/ZHCMSSTDT001_SRV/";
+proxyType = http;
+proxyHost = "localhost";
+proxyPort = 20003;
+authType = basic;
+useSSL = false;
+timeout = 3000;
